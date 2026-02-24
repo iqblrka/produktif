@@ -2,63 +2,53 @@
 
 namespace App\Http\Controllers\Backend;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\PengalamanKerja; // Pastikan model dipanggil
 
 class PengalamanKerjaController extends Controller
 {
     public function index()
     {
-        $pengalaman_kerja = DB::table('pengalaman_kerja')->get();
+        $pengalaman_kerja = PengalamanKerja::all();
         return view('backend.pengalaman_kerja.index', compact('pengalaman_kerja'));
     }
 
+    // --- FUNGSI UNTUK MENAMPILKAN FORM TAMBAH ---
     public function create()
     {
-        $pengalaman_kerja = null;
-        return view('backend.pengalaman_kerja.create', compact('pengalaman_kerja'));
+        // Karena View kamu dinamis, kita cukup panggil view-nya saja
+        return view('backend.pengalaman_kerja.create');
     }
 
     public function store(Request $request)
     {
-        DB::table('pengalaman_kerja')->insert([
-            'nama' => $request->nama,
-            'jabatan' => $request->jabatan,
-            'tahun_masuk' => $request->tahun_masuk,
-            'tahun_keluar' => $request->tahun_keluar,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
+        PengalamanKerja::create($request->all());
         return redirect()->route('backend.pengalaman_kerja.index')
-            ->with('success', 'Data berhasil disimpan!');
+                         ->with('success', 'Data berhasil disimpan.');
     }
 
+    // --- FUNGSI UNTUK MENAMPILKAN FORM EDIT ---
     public function edit($id)
     {
-        $pengalaman_kerja = DB::table('pengalaman_kerja')->where('id', $id)->first();
+        $pengalaman_kerja = PengalamanKerja::find($id);
+        // Menggunakan file yang sama dengan create karena kode kamu sudah dinamis
         return view('backend.pengalaman_kerja.create', compact('pengalaman_kerja'));
     }
 
     public function update(Request $request, $id)
     {
-        DB::table('pengalaman_kerja')->where('id', $id)->update([
-            'nama' => $request->nama,
-            'jabatan' => $request->jabatan,
-            'tahun_masuk' => $request->tahun_masuk,
-            'tahun_keluar' => $request->tahun_keluar,
-            'updated_at' => now(),
-        ]);
+        $data = PengalamanKerja::find($id);
+        $data->update($request->all());
 
         return redirect()->route('backend.pengalaman_kerja.index')
-            ->with('success', 'Data berhasil diupdate!');
+                         ->with('success', 'Data berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
-        DB::table('pengalaman_kerja')->where('id', $id)->delete();
+        PengalamanKerja::destroy($id);
         return redirect()->route('backend.pengalaman_kerja.index')
-            ->with('success', 'Data berhasil dihapus!');
+                         ->with('success', 'Data berhasil dihapus.');
     }
 }

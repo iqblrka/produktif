@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Backend\PengalamanKerjaController;
+use App\Http\Controllers\Backend\PendidikanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,17 +29,11 @@ Route::post('/contact', function () {
 | AUTHENTICATION ROUTES
 |--------------------------------------------------------------------------
 */
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login')->middleware('guest');
-
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register')->middleware('guest');
-
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 
 Auth::routes([
@@ -51,7 +46,7 @@ Auth::routes([
 
 /*
 |--------------------------------------------------------------------------
-| PROTECTED ROUTES (Hanya bisa diakses jika sudah login)
+| PROTECTED ROUTES (User Biasa)
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->group(function () {
@@ -60,16 +55,19 @@ Route::middleware(['auth'])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| ADMIN ROUTES (Tadinya BACKEND)
+| ADMIN ROUTES (Dashboard & CRUD)
 |--------------------------------------------------------------------------
 */
-// FIX: Mengubah prefix 'backend' menjadi 'admin' agar tidak bentrok dengan folder public/backend
-Route::prefix('admin')->name('backend.')->group(function () {
+// KUNCI PERBAIKAN: Satukan semua rute backend ke dalam SATU grup utama
+Route::middleware(['auth'])->prefix('admin')->name('backend.')->group(function () {
     
-    // Dashboard - URL BARU: /admin/dashboard
+    // Dashboard - URL: /admin/dashboard | Name: backend.dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
-    // Pengalaman Kerja CRUD - URL BARU: /admin/pengalaman_kerja
+    // Pengalaman Kerja CRUD - URL: /admin/pengalaman_kerja | Name: backend.pengalaman_kerja.index
     Route::resource('pengalaman_kerja', PengalamanKerjaController::class);
+
+    // Pendidikan CRUD - URL: /admin/pendidikan | Name: backend.pendidikan.index
+    Route::resource('pendidikan', PendidikanController::class);
     
 });

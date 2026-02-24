@@ -45,11 +45,10 @@
                      onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     Sign out
                   </a>
-
                   <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST" class="d-none">
                       <?php echo csrf_field(); ?>
                   </form>
-                  </li>
+                </li>
               </ul>
             </li>
           </ul>
@@ -75,16 +74,24 @@
                 </a>
               </li>
               
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item menu-open"> <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-briefcase"></i>
-                  <p>Riwayat Hidup <i class="nav-arrow bi bi-chevron-right"></i></p>
+                  <p>
+                    Riwayat Hidup
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                  </p>
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href="<?php echo e(route('backend.pengalaman_kerja.index')); ?>" class="nav-link">
                       <i class="nav-icon bi bi-circle"></i>
                       <p>Pengalaman Kerja</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="<?php echo e(route('backend.pendidikan.index')); ?>" class="nav-link">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Pendidikan</p>
                     </a>
                   </li>
                 </ul>
@@ -118,14 +125,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <script src="<?php echo e(asset('backend/dist/js/adminlte.js')); ?>"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js" crossorigin="anonymous"></script>
 
     <script>
-      // 1. Mengaktifkan Scrollbar di Sidebar
       document.addEventListener('DOMContentLoaded', function () {
         const sidebarWrapper = document.querySelector('.sidebar-wrapper');
         if (sidebarWrapper && OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined) {
@@ -135,13 +140,7 @@
         }
       });
 
-      // 2. Mengaktifkan Fitur Geser Kotak (Sortable)
-      if (document.querySelector('.connectedSortable')) {
-        new Sortable(document.querySelector('.connectedSortable'), { group: 'shared', handle: '.card-header' });
-        document.querySelectorAll('.connectedSortable .card-header').forEach((el) => el.style.cursor = 'move');
-      }
-
-      // 3. Menampilkan Grafik Penjualan (ApexCharts)
+      // Grafik & Map (Inisialisasi hanya jika elemen ada)
       if (document.querySelector('#revenue-chart')) {
         const sales_chart = new ApexCharts(document.querySelector('#revenue-chart'), {
           series: [
@@ -149,17 +148,13 @@
             { name: 'Electronics', data: [65, 59, 80, 81, 56, 55, 40] }
           ],
           chart: { height: 300, type: 'area', toolbar: { show: false } },
-          legend: { show: false },
           colors: ['#0d6efd', '#20c997'],
-          dataLabels: { enabled: false },
           stroke: { curve: 'smooth' },
           xaxis: { type: 'datetime', categories: ['2023-01-01', '2023-02-01', '2023-03-01', '2023-04-01', '2023-05-01', '2023-06-01', '2023-07-01'] },
-          tooltip: { x: { format: 'MMMM yyyy' } }
         });
         sales_chart.render();
       }
 
-      // 4. Menampilkan Peta Dunia (jsVectorMap)
       if (document.querySelector('#world-map')) {
         new jsVectorMap({ selector: '#world-map', map: 'world' });
       }
