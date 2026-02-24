@@ -1,95 +1,170 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Nice Admin') }}</title>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" crossorigin="anonymous" />
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css" crossorigin="anonymous" />
+    
+    <link rel="stylesheet" href="{{ asset('backend/dist/css/adminlte.css') }}" />
+  </head>
+  
+  <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
+    <div class="app-wrapper">
+      
+      <nav class="app-header navbar navbar-expand bg-body">
+        <div class="container-fluid">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button"><i class="bi bi-list"></i></a>
+            </li>
+            <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Home</a></li>
+          </ul>
+          
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown user-menu">
+              <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                <img src="{{ asset('backend/dist/assets/img/user2-160x160.jpg') }}" class="user-image rounded-circle shadow" alt="User Image" />
+                <span class="d-none d-md-inline">Admin System</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                <li class="user-header text-bg-primary">
+                  <img src="{{ asset('backend/dist/assets/img/user2-160x160.jpg') }}" class="rounded-circle shadow" alt="User Image" />
+                  <p>Admin System - Web Developer</p>
+                </li>
+                <li class="user-footer">
+                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  
+                  <a href="{{ route('logout') }}" class="btn btn-default btn-flat float-end" 
+                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Sign out
+                  </a>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('backend/assets/images/favicon.png') }}">
-
-    <!-- Bootstrap CSS -->
-    <link href="{{ asset('backend/assets/libs/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="{{ asset('backend/assets/libs/font-awesome/css/all.min.css') }}" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="{{ asset('backend/assets/css/style.min.css') }}" rel="stylesheet">
-</head>
-
-<body>
-    <!-- ============================================================== -->
-    <!-- Main wrapper -->
-    <!-- ============================================================== -->
-    <div id="main-wrapper" data-layout="vertical" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
-
-        <!-- ============================================================== -->
-        <!-- Topbar -->
-        <!-- ============================================================== -->
-        <header class="topbar">
-            <div class="container-fluid">
-                <nav class="navbar navbar-expand-md navbar-light">
-                    <a class="navbar-brand" href="#">
-                        <img src="{{ asset('backend/assets/images/logo-icon.png') }}" alt="Logo" width="30">
-                        <span class="ml-2">Nice Admin</span>
-                    </a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fas fa-home"></i> Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fas fa-chart-line"></i> Analytics</a>
-                            </li>
-                        </ul>
-                        <ul class="navbar-nav">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="https://ui-avatars.com/api/?name=Jenifer+Smith&background=fff&color=333" alt="Jenifer Smith" width="30" class="rounded-circle">
-                                    <span class="ml-2 d-none d-md-inline">Jenifer Smith</span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#"><i class="fas fa-user"></i> Profile</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Settings</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-        </header>
-
-        <!-- ============================================================== -->
-        <!-- Left Sidebar -->
-        <!-- ============================================================== -->
-        @include('backend.layouts.sidebar')
-
-        <!-- ============================================================== -->
-        <!-- Page wrapper -->
-        <!-- ============================================================== -->
-        <div class="page-wrapper">
-            <div class="container-fluid">
-                @yield('content')
-            </div>
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                      @csrf
+                  </form>
+                  </li>
+              </ul>
+            </li>
+          </ul>
         </div>
-        <!-- ============================================================== -->
-        <!-- End Page wrapper -->
-        <!-- ============================================================== -->
+      </nav>
+      
+      <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+        <div class="sidebar-brand">
+          <a href="#" class="brand-link">
+            <img src="{{ asset('backend/dist/assets/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image opacity-75 shadow" />
+            <span class="brand-text fw-light">AdminLTE 4</span>
+          </a>
+        </div>
+        
+        <div class="sidebar-wrapper">
+          <nav class="mt-2">
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation" data-accordion="false">
+              
+              <li class="nav-item">
+                <a href="{{ route('backend.dashboard') }}" class="nav-link active">
+                  <i class="nav-icon bi bi-speedometer"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+              
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon bi bi-briefcase"></i>
+                  <p>Riwayat Hidup <i class="nav-arrow bi bi-chevron-right"></i></p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('backend.pengalaman_kerja.index') }}" class="nav-link">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Pengalaman Kerja</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              
+            </ul>
+          </nav>
+        </div>
+      </aside>
+      
+      <main class="app-main">
+        <div class="app-content-header">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-6"><h3 class="mb-0">Backend Dashboard</h3></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="app-content">
+          @yield('content')
+        </div>
+      </main>
+      
+      <footer class="app-footer">
+        <strong>Copyright &copy; 2026 AdminLTE.</strong> All rights reserved.
+      </footer>
     </div>
-    <!-- ============================================================== -->
-    <!-- End Wrapper -->
-    <!-- ============================================================== -->
 
-    <!-- All Jquery -->
-    <script src="{{ asset('backend/assets/libs/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('backend/assets/libs/popper.js/dist/umd/popper.min.js') }}"></script>
-    <script src="{{ asset('backend/assets/libs/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/custom.min.js') }}"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="{{ asset('backend/dist/js/adminlte.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js" crossorigin="anonymous"></script>
+
+    <script>
+      // 1. Mengaktifkan Scrollbar di Sidebar
+      document.addEventListener('DOMContentLoaded', function () {
+        const sidebarWrapper = document.querySelector('.sidebar-wrapper');
+        if (sidebarWrapper && OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined) {
+          OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
+            scrollbars: { theme: 'os-theme-light', autoHide: 'leave', clickScroll: true }
+          });
+        }
+      });
+
+      // 2. Mengaktifkan Fitur Geser Kotak (Sortable)
+      if (document.querySelector('.connectedSortable')) {
+        new Sortable(document.querySelector('.connectedSortable'), { group: 'shared', handle: '.card-header' });
+        document.querySelectorAll('.connectedSortable .card-header').forEach((el) => el.style.cursor = 'move');
+      }
+
+      // 3. Menampilkan Grafik Penjualan (ApexCharts)
+      if (document.querySelector('#revenue-chart')) {
+        const sales_chart = new ApexCharts(document.querySelector('#revenue-chart'), {
+          series: [
+            { name: 'Digital Goods', data: [28, 48, 40, 19, 86, 27, 90] },
+            { name: 'Electronics', data: [65, 59, 80, 81, 56, 55, 40] }
+          ],
+          chart: { height: 300, type: 'area', toolbar: { show: false } },
+          legend: { show: false },
+          colors: ['#0d6efd', '#20c997'],
+          dataLabels: { enabled: false },
+          stroke: { curve: 'smooth' },
+          xaxis: { type: 'datetime', categories: ['2023-01-01', '2023-02-01', '2023-03-01', '2023-04-01', '2023-05-01', '2023-06-01', '2023-07-01'] },
+          tooltip: { x: { format: 'MMMM yyyy' } }
+        });
+        sales_chart.render();
+      }
+
+      // 4. Menampilkan Peta Dunia (jsVectorMap)
+      if (document.querySelector('#world-map')) {
+        new jsVectorMap({ selector: '#world-map', map: 'world' });
+      }
+    </script>
+    
+    @yield('script')
+  </body>
 </html>
